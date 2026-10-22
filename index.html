@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кошелёк — 1 000 000 ₽</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: radial-gradient(circle at 50% 0%, #1a1a2e 0%, #0a0a15 70%);
+            color: #fff;
+            font-family: 'Press Start 2P', cursive;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 15px;
+            overflow-x: hidden;
+        }
+
+        h1 {
+            font-size: 18px;
+            color: #2ecc71;
+            text-shadow: 3px 3px 0 #000, 0 0 30px #2ecc71;
+            margin-bottom: 10px;
+            text-align: center;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 3px 3px 0 #000, 0 0 20px #2ecc71; }
+            to { text-shadow: 3px 3px 0 #000, 0 0 40px #2ecc71, 0 0 80px #27ae60; }
+        }
+
+        .subtitle {
+            font-size: 8px;
+            color: #f1c40f;
+            text-shadow: 0 0 15px #f1c40f;
+            margin-bottom: 25px;
+            text-align: center;
+            line-height: 2;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        /* КОШЕЛЁК */
+        .wallet-card {
+            background: linear-gradient(135deg, #1a1a2e 0%, #2d2d44 50%, #1a1a2e 100%);
+            border: 4px solid #f1c40f;
+            border-radius: 20px;
+            padding: 30px 25px;
+            box-shadow: 0 0 60px rgba(241, 196, 15, 0.5);
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wallet-card::before {
+            content: '';
+            position: absolute;
+            top: -50%; right: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(241,196,15,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .wallet-icon {
+            font-size: 60px;
+            text-align: center;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 20px #f1c40f);
+            animation: float 3s infinite ease-in-out;
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .wallet-label {
+            text-align: center;
+            font-size: 8px;
+            color: #aaa;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .balance {
+            text-align: center;
+            font-size: 32px;
+            color: #2ecc71;
+            text-shadow: 0 0 30px #2ecc71, 0 0 60px #27ae60;
+            margin-bottom: 5px;
+            position: relative;
+            z-index: 2;
+            animation: balancePulse 2s infinite alternate;
+        }
+
+        @keyframes balancePulse {
+            from { text-shadow: 0 0 20px #2ecc71; }
+            to { text-shadow: 0 0 40px #2ecc71, 0 0 80px #27ae60; }
+        }
+
+        .balance-currency {
+            text-align: center;
+            font-size: 14px;
+            color: #f1c40f;
+            text-shadow: 0 0 15px #f1c40f;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-number {
+            text-align: center;
+            font-size: 10px;
+            color: #ddd;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 2;
+            padding: 10px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 8px;
+            border: 1px dashed #555;
+        }
+
+        .card-owner {
+            display: flex;
+            justify-content: space-between;
+            font-size: 7px;
+            color: #aaa;
+            padding: 0 10px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-owner span { color: #f1c40f; }
+
+        /* БЫСТРЫЕ ДЕЙСТВИЯ */
+        .actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: #fff;
+            border: 3px solid #fff;
+            padding: 15px 8px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 7px;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.7);
+        }
+
+        .action-btn .icon {
+            font-size: 24px;
+        }
+
+        .action-btn.green { background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); }
+        .action-btn.green:hover { box-shadow: 0 8px 25px rgba(46, 204, 113, 0.7); }
+
+        .action-btn.purple { background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); }
+        .action-btn.purple:hover { box-shadow: 0 8px 25px rgba(155, 89, 182, 0.7); }
+
+        /* ПЕРЕВОД */
+        .transfer-section {
+            background: linear-gradient(180deg, #1a1a2e 0%, #0d0d1a 100%);
+            border: 3px solid #3498db;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 25px rgba(52, 152, 219, 0.4);
+        }
+
+        .transfer-title {
+            font-size: 10px;
+            color: #3498db;
+            text-align: center;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px #3498db;
+        }
+
+        .transfer-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-group label {
+            font-size: 7px;
+            color: #ddd;
+        }
+
+        .form-group input {
+            background: #0a0a15;
+            color: #f1c40f;
+            border: 2px solid #3498db;
+            padding: 12px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 8px;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: #f1c40f;
+            box-shadow: 0 0 15px rgba(241, 196, 15, 0.5);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: #fff;
+            border: 3px solid #fff;
+            padding: 14px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 9px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .btn:hover { transform: scale(1.03); box-shadow: 0 0 25px rgba(46, 204, 113, 0.8); }
+        .btn:active { transform: scale(0.97); }
+
+        /* ИСТОРИЯ */
+        .history {
+            background: linear-gradient(180deg, #1a1a2e 0%, #0d0d1a 100%);
+            border: 3px solid #f39c12;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 25px rgba(243, 156, 18, 0.4);
+        }
+
+        .history-title {
+            font-size: 10px;
+            color: #f39c12;
+            text-align: center;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px #f39c12;
+        }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 7px;
+            border-left: 3px solid;
+        }
+
+        .history-item.income { border-color: #2ecc71; }
+        .history-item.expense { border-color: #e74c3c; }
+
+        .history-info {
+            flex: 1;
+        }
+
+        .history-desc {
+            color: #ddd;
+            margin-bottom: 4px;
+        }
+
+        .history-date {
+            color: #666;
+            font-size: 6px;
+        }
+
+        .history-amount {
+            font-size: 9px;
+            font-weight: bold;
+        }
+
+        .history-amount.income { color: #2ecc71; }
+        .history-amount.expense { color: #e74c3c; }
+
+        /* ФУТЕР */
+        .footer {
+            font-size: 7px;
+            color: #555;
+            text-align: center;
+            line-height: 2;
+            margin-top: 10px;
+        }
+
+        /* УВЕДОМЛЕНИЕ */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: #fff;
+            border: 3px solid #fff;
+            border-radius: 12px;
+            padding: 15px 25px;
+            font-size: 8px;
+            box-shadow: 0 0 40px rgba(46, 204, 113, 0.9);
+            z-index: 9999;
+            transition: transform 0.4s;
+            text-align: center;
+            max-width: 90%;
+        }
+
+        .toast.show { transform: translateX(-50%) translateY(0); }
+
+        .toast.error {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            box-shadow: 0 0 40px rgba(231, 76, 60, 0.9);
+        }
+
+        @media (max-width: 500px) {
+            h1 { font-size: 12px; }
+            .balance { font-size: 22px; }
+            .balance-currency { font-size: 11px; }
+            .card-number { font-size: 8px; }
+            .action-btn { font-size: 6px; padding: 12px 5px; }
+            .action-btn .icon { font-size: 20px; }
+            .btn { font-size: 7px; padding: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>💳 КОШЕЛЁК 💳</h1>
+    <div class="subtitle">
+        ✦ Личный цифровой кошелёк ✦<br>
+        Баланс: 1 000 000 ₽
+    </div>
+
+    <div class="container">
+
+        <!-- КОШЕЛЁК -->
+        <div class="wallet-card">
+            <div class="wallet-icon">💳</div>
+            <div class="wallet-label">ДОСТУПНЫЙ БАЛАНС</div>
+            <div class="balance" id="balance">1 000 000</div>
+            <div class="balance-currency">₽ РУБЛЕЙ</div>
+
+            <div class="card-number">•••• •••• •••• 2026</div>
+
+            <div class="card-owner">
+                <div>ВЛАДЕЛЕЦ: <span>АЛЕКСАНДР</span></div>
+                <div>СРОК: <span>12/29</span></div>
+            </div>
+        </div>
+
+        <!-- БЫСТРЫЕ ДЕЙСТВИЯ -->
+        <div class="actions">
+            <button class="action-btn green" onclick="quickAction('income', 10000)">
+                <span class="icon">📥</span>
+                ПОПОЛНИТЬ
+            </button>
+            <button class="action-btn" onclick="quickAction('expense', 5000)">
+                <span class="icon">📤</span>
+                СНЯТЬ
+            </button>
+            <button class="action-btn purple" onclick="quickAction('income', 100000)">
+                <span class="icon">🎁</span>
+                БОНУС
+            </button>
+        </div>
+
+        <!-- ПЕРЕВОД -->
+        <div class="transfer-section">
+            <div class="transfer-title">💸 ПЕРЕВОД</div>
+            <div class="transfer-form">
+                <div class="form-group">
+                    <label>КОМУ (ИМЯ):</label>
+                    <input type="text" id="transferName" placeholder="Имя получателя" maxlength="30">
+                </div>
+                <div class="form-group">
+                    <label>СУММА (₽):</label>
+                    <input type="number" id="transferAmount" placeholder="Сумма" min="1">
+                </div>
+                <button class="btn" onclick="transfer()">💸 ПЕРЕВЕСТИ</button>
+            </div>
+        </div>
+
+        <!-- ИСТОРИЯ -->
+        <div class="history">
+            <div class="history-title">📜 ИСТОРИЯ ОПЕРАЦИЙ</div>
+            <div class="history-list" id="historyList">
+                <div class="history-item income">
+                    <div class="history-info">
+                        <div class="history-desc">Стартовый баланс</div>
+                        <div class="history-date">21.10.2026 12:00</div>
+                    </div>
+                    <div class="history-amount income">+1 000 000 ₽</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            💳 Кошелёк Александра · 1 000 000 ₽<br>
+            Все операции — в рамках проекта «Христодолларс»<br>
+            © 2026
+        </div>
+
+    </div>
+
+    <div class="toast" id="toast">✅ Операция выполнена</div>
+
+<script>
+    // === СОСТОЯНИЕ ===
+    let balance = 1000000;
+    let history = [
+        { type: 'income', desc: 'Стартовый баланс', amount: 1000000, date: new Date('2026-10-21T12:00:00') }
+    ];
+
+    const balanceEl = document.getElementById('balance');
+    const historyList = document.getElementById('historyList');
+    const toast = document.getElementById('toast');
+
+    // === ФОРМАТИРОВАНИЕ ===
+    function formatMoney(num) {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    }
+
+    function formatDate(date) {
+        return date.toLocaleDateString('ru-RU') + ' ' + date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    // === ОБНОВЛЕНИЕ UI ===
+    function updateUI() {
+        balanceEl.textContent = formatMoney(balance);
+        renderHistory();
+    }
+
+    function renderHistory() {
+        historyList.innerHTML = '';
+        history.slice().reverse().forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'history-item ' + item.type;
+            div.innerHTML = `
+                <div class="history-info">
+                    <div class="history-desc">${item.desc}</div>
+                    <div class="history-date">${formatDate(item.date)}</div>
+                </div>
+                <div class="history-amount ${item.type}">
+                    ${item.type === 'income' ? '+' : '-'}${formatMoney(item.amount)} ₽
+                </div>
+            `;
+            historyList.appendChild(div);
+        });
+    }
+
+    // === УВЕДОМЛЕНИЕ ===
+    function showToast(text, isError = false) {
+        toast.textContent = text;
+        toast.classList.toggle('error', isError);
+        toast.classList.add('show');
+
+        clearTimeout(window.toastTimeout);
+        window.toastTimeout = setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }
+
+    // === ПОПОЛНИТЬ / СНЯТЬ ===
+    function quickAction(type, amount) {
+        if (type === 'income') {
+            balance += amount;
+            history.push({
+                type: 'income',
+                desc: 'Пополнение кошелька',
+                amount: amount,
+                date: new Date()
+            });
+            showToast(`✅ +${formatMoney(amount)} ₽`);
+        } else {
+            if (balance < amount) {
+                showToast('❌ Недостаточно средств!', true);
+                return;
+            }
+            balance -= amount;
+            history.push({
+                type: 'expense',
+                desc: 'Снятие средств',
+                amount: amount,
+                date: new Date()
+            });
+            showToast(`💸 -${formatMoney(amount)} ₽`);
+        }
+        updateUI();
+    }
+
+    // === ПЕРЕВОД ===
+    function transfer() {
+        const nameInput = document.getElementById('transferName');
+        const amountInput = document.getElementById('transferAmount');
+        const name = nameInput.value.trim();
+        const amount = parseInt(amountInput.value);
+
+        if (!name) {
+            showToast('❌ Введи имя получателя!', true);
+            return;
+        }
+
+        if (isNaN(amount) || amount <= 0) {
+            showToast('❌ Введи корректную сумму!', true);
+            return;
+        }
+
+        if (amount > balance) {
+            showToast('❌ Недостаточно средств!', true);
+            return;
+        }
+
+        balance -= amount;
+        history.push({
+            type: 'expense',
+            desc: `Перевод: ${name}`,
+            amount: amount,
+            date: new Date()
+        });
+
+        nameInput.value = '';
+        amountInput.value = '';
+
+        showToast(`💸 Переведено ${formatMoney(amount)} ₽ → ${name}`);
+        updateUI();
+    }
+
+    // === СТАРТ ===
+    updateUI();
+</script>
+
+</body>
+</html>
